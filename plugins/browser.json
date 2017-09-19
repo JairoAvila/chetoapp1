@@ -1,0 +1,52 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {}
+    },
+    "installed_plugins": {
+        "cordova-plugin-console": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-device": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-dialogs": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-geolocation": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-globalization": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-native-settings": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-vibration": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "phonegap-plugin-barcodescanner": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-background-mode": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-background-geolocation-lt": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        }
+    },
+    "dependent_plugins": {
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        },
+        "cordova-plugin-background-fetch": {
+            "PACKAGE_NAME": "com.coolappz.chetos"
+        }
+    }
+}

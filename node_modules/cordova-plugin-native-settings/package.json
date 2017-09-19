@@ -1,0 +1,104 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-plugin-native-settings",
+        "scope": null,
+        "escapedName": "cordova-plugin-native-settings",
+        "name": "cordova-plugin-native-settings",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "c:\\xampp\\htdocs\\CHETOS\\node_modules"
+    ]
+  ],
+  "_from": "cordova-plugin-native-settings@latest",
+  "_id": "cordova-plugin-native-settings@1.0.0",
+  "_inCache": true,
+  "_location": "/cordova-plugin-native-settings",
+  "_nodeVersion": "6.11.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-plugin-native-settings-1.0.0.tgz_1500045022694_0.19404713343828917"
+  },
+  "_npmUser": {
+    "name": "bradyliles",
+    "email": "bradyliles@outlook.com"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-plugin-native-settings",
+    "scope": null,
+    "escapedName": "cordova-plugin-native-settings",
+    "name": "cordova-plugin-native-settings",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-native-settings/-/cordova-plugin-native-settings-1.0.0.tgz",
+  "_shasum": "b7bc309c57917a37e4ee0f8bffb99d3fa6a562c7",
+  "_shrinkwrap": null,
+  "_spec": "cordova-plugin-native-settings",
+  "_where": "c:\\xampp\\htdocs\\CHETOS\\node_modules",
+  "author": {
+    "name": "Brady Liles",
+    "email": "bradyliles@outlook.com"
+  },
+  "bugs": {
+    "url": "https://github.com/BradyLiles/cordova-plugin-native-settings/issues"
+  },
+  "contributors": [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "cordova": {
+    "id": "cordova-plugin-native-settings",
+    "platforms": [
+      "android",
+      "ios"
+    ]
+  },
+  "dependencies": {},
+  "description": "Native settings opener for Cordova 4.0 - 7.0",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "b7bc309c57917a37e4ee0f8bffb99d3fa6a562c7",
+    "tarball": "https://registry.npmjs.org/cordova-plugin-native-settings/-/cordova-plugin-native-settings-1.0.0.tgz"
+  },
+  "gitHead": "fc7aeb27310e041d84c43b34ba30aeea36eaec54",
+  "homepage": "https://github.com/BradyLiles/cordova-plugin-native-settings#readme",
+  "keywords": [
+    "native-settings",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios"
+  ],
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "bradyliles",
+      "email": "bradyliles@outlook.com"
+    }
+  ],
+  "name": "cordova-plugin-native-settings",
+  "optionalDependencies": {},
+  "readme": "#NativeSettings plugin for Cordova (6/7)\r\n\r\nThe plugin allows you to open OS settings on iOS 8/9/10 and Android, via cordova-based app. For example, it will allow you to open the keyboard settings, Wifi, bluetooth etc (full list below).\r\n\r\n##Adding/Removing the Plugin \r\nIt will be saved to the config.xml file\r\n\r\n```bash\r\ncordova plugin (add|rm) https://github.com/guyromb/Cordova-open-native-settings.git --save\r\n```\r\n\r\nor via npm (It will be saved to the package.json file)\r\n\r\n```bash\r\nnpm (install|rm) https://github.com/guyromb/Cordova-open-native-settings.git --save\r\n```\r\n\r\n##Using the plugin (opens Location Settings in Android and Application Settings in iOS)\r\n\r\n```\r\ncordova.plugins.settings.open(setting_constant, success_callback, failure_callback);\r\n```\r\n\r\n###Example for iOS and Android - open Wifi settings\r\n\r\n```js\r\nif (window.cordova && window.cordova.plugins.settings) {\r\n    console.log('openNativeSettingsTest is active');\r\n    window.cordova.plugins.settings.open(\"wifi\", function() {\r\n            console.log('opened settings');\r\n        },\r\n        function () {\r\n            console.log('failed to open settings');\r\n        }\r\n    );\r\n} else {\r\n    console.log('openNativeSettingsTest is not active!');\r\n}\r\n```\r\n\r\nIn Android, by default it is opened in the same application as a new activity, the hardware back button will bring the user back to the previous activity (the app). In order to open settings as a new application (two applications will appear in \"recent/opened\" apps list) the following code can be used:\r\n`window.cordova.plugins.settings.open([\"wifi\", true], function() {}, function() {}); ....`\r\n\r\n##Settings Options\r\nYou can use any constant from the following list:\r\n* I tried to map Android and iOS together, however, they are not always the same.\r\n\r\n```\r\n    \"about\", // ios\r\n    \"accessibility\", // ios, android\r\n    \"account\", // ios, android\r\n    \"airplane_mode\", // ios, android\r\n    \"apn\", // android\r\n    \"application_details\", // ios, android\r\n    \"application_development\", // android\r\n    \"application\", // android\r\n    \"autolock\", // ios\r\n    \"bluetooth\", // ios, android\r\n    \"castle\", // ios\r\n    \"captioning\", // android\r\n    \"cast\", // android\r\n    \"cellular_usage\", // ios\r\n    \"configuration_list\", // ios\r\n    \"data_roaming\", // android\r\n    \"date\", // ios, android\r\n    \"display\", // ios, android\r\n    \"dream\", // android\r\n    \"facetime\", // ios\r\n    \"home\", // android\r\n    \"keyboard\", // ios, android\r\n    \"keyboard_subtype\", // android\r\n    \"locale\", // ios, android\r\n    \"location\", // ios, android\r\n    \"manage_all_applications\", // android\r\n    \"manage_applications\", // android\r\n    \"memory_card\", // android\r\n    \"music\", // ios\r\n    \"music_equalizer\", // ios\r\n    \"music_volume\", // ios\r\n    \"network\", // ios, android\r\n    \"nike_ipod\", // ios\r\n    \"nfcsharing\", // android\r\n    \"nfc_payment\", // android\r\n    \"nfc_settings\", // android\r\n    \"notes\", // ios\r\n    \"notification_id\", // ios\r\n    \"passbook\", // ios\r\n    \"phone\", // ios\r\n    \"photos\", // ios\r\n    \"print\", // android\r\n    \"privacy\", // android\r\n    \"quick_launch\", // android\r\n    \"reset\", // ios\r\n    \"ringtone\", // ios\r\n    \"browser\", // ios\r\n    \"search\", // ios, android\r\n    \"security\", // android\r\n    \"settings\", // ios, android\r\n    \"show_regulatory_info\",\r\n    \"sound\", // ios, android\r\n    \"software_update\", // ios\r\n    \"storage\", // ios, android\r\n    \"store\", // ios, android\r\n    \"sync\", // android\r\n    \"tethering\", // ios\r\n    \"twitter\", // ios\r\n    \"usage\", // ios, android\r\n    \"user_dictionary\", // android\r\n    \"video\", // ios\r\n    \"voice_input\", // android\r\n    \"vpn\", // ios\r\n    \"wallpaper\", // ios\r\n    \"wifi_ip\", // android\r\n    \"wifi\", // ios, android\r\n    \"wireless\" // android\r\n```\r\n\r\n##Notes\r\n* Android plugin based on the following information: https://developer.android.com/reference/android/provider/Settings.html#ACTION_DREAM_SETTINGS\r\n* iOS plugin based on the following information: https://gist.github.com/phynet/471089a51b8f940f0fb4\r\n* In iOS, this plugin generates a URL scheme for the *-Info.plist configurations file.\r\n* The plugin for Android is based on the forked repository and was refactored. The iOS part was built from skretch.\r\n\r\n##License\r\n```\r\nThe MIT License\r\n\r\nCopyright (c) 2016 Guy Rombaut\r\n\r\nPermission is hereby granted, free of charge, to any person obtaining a copy\r\nof this software and associated documentation files (the \"Software\"), to deal\r\nin the Software without restriction, including without limitation the rights\r\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\r\ncopies of the Software, and to permit persons to whom the Software is\r\nfurnished to do so, subject to the following conditions:\r\n\r\nThe above copyright notice and this permission notice shall be included in\r\nall copies or substantial portions of the Software.\r\n\r\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\r\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\r\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\r\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\r\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\r\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\r\nTHE SOFTWARE.\r\n```\r\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BradyLiles/cordova-plugin-native-settings.git"
+  },
+  "scripts": {},
+  "version": "1.0.0"
+}

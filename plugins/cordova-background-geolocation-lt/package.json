@@ -1,0 +1,108 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "cordova-background-geolocation-lt",
+        "scope": null,
+        "escapedName": "cordova-background-geolocation-lt",
+        "name": "cordova-background-geolocation-lt",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "D:\\xampp\\htdocs\\CHETO\\chetoapp\\node_modules"
+    ]
+  ],
+  "_from": "cordova-background-geolocation-lt@latest",
+  "_id": "cordova-background-geolocation-lt@2.8.4",
+  "_inCache": true,
+  "_location": "/cordova-background-geolocation-lt",
+  "_nodeVersion": "6.11.0",
+  "_npmOperationalInternal": {
+    "host": "s3://npm-registry-packages",
+    "tmp": "tmp/cordova-background-geolocation-lt-2.8.4.tgz_1505498573961_0.7227594293653965"
+  },
+  "_npmUser": {
+    "name": "christocracy",
+    "email": "chris@transistorsoft.com"
+  },
+  "_npmVersion": "3.10.10",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "cordova-background-geolocation-lt",
+    "scope": null,
+    "escapedName": "cordova-background-geolocation-lt",
+    "name": "cordova-background-geolocation-lt",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-background-geolocation-lt/-/cordova-background-geolocation-lt-2.8.4.tgz",
+  "_shasum": "fce42a524ca330f348e7ceb482c33fe88cdd2c77",
+  "_shrinkwrap": null,
+  "_spec": "cordova-background-geolocation-lt",
+  "_where": "D:\\xampp\\htdocs\\CHETO\\chetoapp\\node_modules",
+  "author": {
+    "name": "Chris Scott, Transistor Software"
+  },
+  "bugs": {
+    "url": "https://github.com/transistorsoft/cordova-background-geolocation-lt/issues"
+  },
+  "cordova": {
+    "id": "cordova-background-geolocation-lt",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "dependencies": {},
+  "description": "Cordova Background Geolocation.  The most sophisticated, cross-platform location-tracking and geofencing plugin with battery-conscious motion-detection intelligence.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "fce42a524ca330f348e7ceb482c33fe88cdd2c77",
+    "tarball": "https://registry.npmjs.org/cordova-background-geolocation-lt/-/cordova-background-geolocation-lt-2.8.4.tgz"
+  },
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "gitHead": "ac811fa4dd0e41e1060223c246f3e0fda5947e6a",
+  "homepage": "https://github.com/transistorsoft/cordova-background-geolocation-lt#README",
+  "keywords": [
+    "gps",
+    "location",
+    "tracking",
+    "geolocation",
+    "geofencing",
+    "background",
+    "ecosystem:cordova",
+    "cordova-android",
+    "cordova-ios",
+    "cordova-wp8",
+    "cordova",
+    "phonegap"
+  ],
+  "license": "Apache-2.0",
+  "maintainers": [
+    {
+      "name": "christocracy",
+      "email": "chris@transistorsoft.com"
+    }
+  ],
+  "name": "cordova-background-geolocation-lt",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/transistorsoft/cordova-background-geolocation-lt.git"
+  },
+  "scripts": {},
+  "version": "2.8.4"
+}

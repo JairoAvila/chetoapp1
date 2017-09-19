@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "616869526447",
+    "firebase_url": "https://cheto-1496852252707.firebaseio.com",
+    "project_id": "cheto-1496852252707",
+    "storage_bucket": "cheto-1496852252707.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616869526447:android:2e33829f3788c77e",
+        "android_client_info": {
+          "package_name": "com.coolappz.chetos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616869526447-somutlgn92dl64eofpcp3j1pavrq2rur.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.coolappz.chetos",
+            "certificate_hash": "80f539208b00b6edf00c2f921481589dbbd5a2a0"
+          }
+        },
+        {
+          "client_id": "616869526447-8tjt6gm5sm8n5idrlmbf51mbivcv3lt9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCAdit3zATHTRULnUtZp1e07JWpoOwSN-g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616869526447-8tjt6gm5sm8n5idrlmbf51mbivcv3lt9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

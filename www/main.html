@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Principal</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        
+        <!-- Hojas de estilo -->
+        <link rel="stylesheet" type="text/css" href="css/main.css" media="all">
+        <link rel="stylesheet" type="text/css" href="font-awesome-4.7.0/css/font-awesome.css">  
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.5.min.css">
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        
+        <!-- Jquery y jquery-mobile -->
+        <script src="js/jquery-1.11.3.min.js"></script>
+        <script src="js/jquery.mobile-1.4.5.min.js"></script> 
+        
+        <!-- Algoritmo sha y md5 -->
+        <script src="js/jshash-2.2/sha1-min.js" type="text/javascript"></script>
+        <script src="js/jshash-2.2/md5-min.js" type="text/javascript"></script>
+        
+        <!-- Api de google maps -->
+        <script src="http://yui.yahooapis.com/3.7.2/build/yui/yui-min.js"></script>
+        <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCFbf-O33R8pOKXK9AjoQujRJH9ytWKuWk"></script>
+    </head>
+    <body>
+        <!--menuprincipal-->
+        <div data-role="main" class="ui-content" align="center">
+            <nav class="section_menu" hidden>
+                <ul class="menu">            
+        <!--                        <li class="menu_item" onclick="mostrarMenuConductor();$('#programar').dialog('open');" data-reference="homec">
+                        <a href="#">Ruta para hoy</a>
+                    </li>-->
+                    <li class="sin-decoracion" id="obtener_miruta_entrega" onclick="toogleMenu(); obtenerMiruta('entrega');">
+                        <a href="#map-page" data-role="button" data-transition="slide">Ruta entrega</a>
+                    </li>
+                    <li class="sin-decoracion" id="obtener_miruta_recogida" onclick="toogleMenu(); obtenerMiruta('recogida');">
+                        <a href="#map-page" data-role="button" data-transition="slide">Ruta recogida</a>
+                    </li>
+                    <li class="sin-decoracion" data-reference="actualizar" onclick="toogleMenu(); obtenerDatosUsuario();">
+                        <a href="#perfil" data-role="button" data-transition="slide">Mi Perfil</a>
+                    </li>
+                    <li class="sin-decoracion" id="obtener_misrutas" data-reference="home" onclick="toogleMenu(); obtenerMiruta('entrega','solodatos');">
+                        <a href="#homeconductor" data-role="button" data-transition="slide">Mis rutas</a>
+                    </li>
+                    <li class="sin-decoracion" id="historico" onclick="toogleMenu(); traerServicios();" hidden>
+                        <a href="#historico-servicios" data-role="button" data-transition="slide">Historico</a>
+                    </li>
+                    <li class="sin-decoracion" id="que_paso" onclick="toogleMenu();if(localStorage.idusuario == 4){abrirPopup('popup_quepaso_usuario');}else{abrirPopup('popup_quepaso_usuario');}">
+                        <a href="#" data-role="button" data-transition="slide">Que paso</a>
+                    </li>
+                    <li class="sin-decoracion" id="promociones" data-reference="quepaso-coment" onclick="toogleMenu(); obtenerDatosPromociones();" hidden>
+                        <a href="#page_promociones" data-role="button" data-transition="slide">Promociones</a>
+                    </li>
+                    <li class="sin-decoracion" onclick="salir();">
+                        <a href="#"  class="sin_borde" data-role="button" data-transition="slide">Cerrar sesi&oacute;n</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        
+        <!-- pagina principal-->
+        <div data-role="page" id="homeconductor" class="">            
+            <!--Header principal conductor-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/menucheto1.png" alt="inicio" onclick="toogleMenu();"></div></div>
+                <div class="flotarizaquierda lb-64" align="center"><h2 class="arial blanco texto-18" id="titulo-subservicio-sel">MIS RUTAS</h2></div>
+                <div class="flotarizaquierda margen_top-5">
+                    <select name="statusconductor" id="statusconductor" data-track-theme="a" data-theme="a" data-role="slider" data-mini="true" onchange="cambiostatus($(this).val(),1)">
+                        <option value="0">Off</option>
+                        <option value="1" selected="">On</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!--footer principal conductor-->
+            <div data-role="footer" data-position="fixed" class="fondo_negro" align="center">
+<!--                <div class="circulo"></div>-->
+            </div>
+            
+            <!--contenedor principal conductor-->
+            <div data-role="main" class="ui-content" align="center">                
+                <div class="mis_rutas">
+                    <h2>PASAJEROS</h2>                    
+                    <table class="tabla_misrutas">
+                        <thead>
+                          <tr>
+                            <th>Nombre</th>
+                            <th>Telefono</th>
+                            <th>No pasajeros</th>
+                          </tr>
+                        </thead>
+                        <tbody id="lista_pasajeros">
+                        </tbody>
+                      </table>
+                </div>
+                <div class="mis_rutas">                    
+                    <h2>RUTA DE HOY</h2>
+                    <h3 id="nombre_ruta"></h3>
+                    <div class="sin-decoracion" id="iniciotecorrido" onclick="iniciarrecorrido()" style="display: none">
+                        <a href="#map-page1" data-role="button" data-inline="true" data-theme="b">Iniciar Ruta</a>
+                    </div>
+                    <a href="#" data-role="button" data-inline="true" data-theme="b" onclick="window.open('https://www.eurekadms.co/CHETO/web/ArchivosDescarga/Pdf/pdf.php?id=260', '_blank', 'location=no');">FUEC</a>
+                </div>   
+                
+                <!--popup para indicar que apaso durante el recorrido-->
+                <div data-role="popup" class="popup" data-overlay-theme="a" data-transition="slide" id="popup_quepaso" align="center">
+                    <div id="titulos"></div>
+                    <h2>CUENTANOSITO</h2>
+                    <div class="borde_imagen">
+                        <textarea id="comentario_quepaso" class="quepaso" name="comentario_quepaso" placeholder="Describa su comentario"></textarea>  
+                    </div>
+                    <div class="formulario_cheto">
+                        <input type="button" class="btn_login" value="Enviar" onclick="envioComentarios()">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- pagina de login-->
+        <div data-role="page" id="login" class="fondo_login">
+            <div data-role="main" class="ui-content" align="center">
+                <img src="img/logo/logocheto.png" class="logo_principal" id="logo" alt="logo">
+                <!--<label class="texto_blanco" for="password">Usuario:</label>-->
+                <input type="text" class="texto_blanco texto-18" name="passwordusername" id="username" value="" data-corners="false" placeholder="Correo electronico" autocomplete="on">
+                <!--<label class="texto_blanco" for="password">Password:</label>-->
+                <input type="password" class="texto_blanco texto-18" name="password" id="password" value="" data-corners="false" placeholder="Contraseña" autocomplete="off">
+                <a href="#" class="ui-btn ui-mini lb-40 btn_login texto-18" data-corners="false" onclick="login();">INGRESAR</a>
+                <br>
+                <a href="#">HAS OLVIDADO CONTRASEÑA</a>
+                <div class="login_facebook">
+                    <h2 class="sin-decoracion texto_blanco">INGRESA CON:</h2>
+                    <img src="img/iconos/facebook.png" alt="login-facebook" class="btn_facebook" onclick="loginFacebook()" />
+                </div>
+            </div>
+        </div>
+        
+        <!-- pagina seleccioncarro-->
+        <div data-role="page" id="seleccioncarro" class="">            
+            <!--Header principal-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/menucheto1.png" alt="inicio" onclick="toogleMenu();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-subservicio-sel">CHETO</h2></div>
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            
+            <!--footer principal-->
+            <div data-role="footer" data-position="fixed" class="fondo_negro" align="center">
+                <div class="circulo"></div>
+                <div class="tablero_ruta" align="center"><h2 id="ruta">RUTA</h2></div>
+            </div>  
+            <!--contenedor-->
+            <div data-role="main" class="ui-content" align="center">
+                <div class="logo">
+                  <img src="img/iconos/icon2.png" alt="Community" />
+                  <img src="img/iconos/tucsonparaaplicaci.png" alt="imagencarro" />
+                </div>
+                <div class="content_to_center">
+                    <h3>Selecciona tu carro</h3>
+                    <select id="selectcarroconduce" class="login_field"></select>
+                    <br>
+                    <button id="btnseleccionarcarroconduce" name="btnseleccionarcarroconduce" class="btn" onclick="seleccionarcarroconduce();"> Continuar </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- pagina que muestra el mapa-->
+        <div data-role="page" id="map-page" data-url="map-page">
+            <!--Header principal reserva-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/atras.png" alt="atrasimg" onclick="parent.history.back();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-subservicio-sel">CHETO</h2></div>
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            
+            <div role="main" class="ui-content" id="map-canvas">
+                <!-- map loads here... -->        
+            </div>
+            <a href="tel:+3102712547" class="telefono_btn" data-role="button" data-transition="slide"><img src="img/iconos/telefono.png" class="telefono_img" alt="telefono"></a>
+            <div class="footer-tablero" align="center">
+                <div class="tablero_ruta" align="center"><h3 id="ruta">RUTA</h3></div>
+            </div>
+        </div>
+        
+        <!-- pagina de reserva-->
+        <div data-role="page" id="reserva">
+            <!--Header principal reserva-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/menucheto1.png" alt="inicio" onclick="toogleMenu();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-subservicio-sel">CHETO</h2></div>
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            
+            <!--popup para indicar que apaso durante el recorrido-->
+                <div data-role="popup" class="popup" data-overlay-theme="a" data-transition="slide" id="popup_quepaso_usuario" align="center">
+                    <div id="titulos"></div>
+                    <h2>CUENTANOS</h2>
+                    <div class="borde_imagen">
+                        <textarea id="pp" class="quepaso" name="comentario_quepaso" placeholder="Describa su comentario"></textarea>
+                    </div>
+                    <div class="formulario_cheto">
+                        <input type="button" class="btn_login" value="Enviar" onclick="envioComentarios()">
+                    </div>
+                </div>
+            
+            <!--contenedor reserva-->
+            <div role="main" class="ui-content">
+                <div id="map-canvas-user"></div>              
+                
+                <div id="recogida" align="center">
+                    <div style="width: 90%">
+                        <input type="text" name="direccionsalida" id="direccionsalida" onclick="ak = 'salida';" onkeyup="cambioDireccion('salida');" placeholder="Dónde te recogemos?">
+                        <input type = "hidden" id="latitudsalida">
+                        <input type = "hidden" id="longitudsalida">
+                        <input name="mayorsalida" id="mayorsalida" type="hidden" value="">
+                    </div>
+                </div>
+                <div id="dejada" class="dejada" align="center">
+                    <div style="width: 90%">
+                        <input type="text" name="direccionllegada" id="direccionllegada" onclick="ak = 'llegada';" onkeyup="cambioDireccion('llegada');" placeholder="Dónde te dejamos?">
+                        <a href="#popup_recogida" data-rel="popup" onclick="abrirReserva();">mas</a>
+                        <input type = "hidden" id="latitudllegada">
+                        <input type = "hidden" id="longitudllegada">
+                        <input name="mayorllegada" id="mayorllegada" type="hidden" value="">
+                    </div>
+                </div>
+                <!--popup tarjeta presentacion sucursal-->
+                <div data-role="popup" class="popup_reserva" data-transition="slideup" id="popup_recogida">
+                    <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-left">Close</a>
+                    <div>
+                        <label>Cual es tu hora de entrada?</label><br>
+                        <input type="time" class="horaentrada" name="horaentrada" id="horaentrada"/>
+                    </div>
+                    <div>
+                        <label>Que dia te recogemos?</label><br>
+                        <input type="date" class="horaentrada" name="diarecogida" id="diarecogida" onchange="diasRecogidas();"/><br>
+                    </div>
+                    <div>
+                        <label>Que otros dias te recogemos?</label><br><br>
+                        <div class="diasrecogidas" id="diasrecogidas"></div><br>
+                        <label>Cuantos?</label><br><br>
+                        <div class="diasrecogidas" id="totalpasajeros">
+                        </div>
+                        <button type="button" class="btn" onclick="enviarReserva();">enviar</button>
+                    </div>
+                </div>
+            </div>
+            
+            
+<!--            <div data-role="main" class="ui-content" id="conten-mapa" align="center">
+                <div id="contentreserva">                        
+                    <div id="content_convenio" style="position: absolute; top: 65px; right: 20px; display: none;">
+                        <select name="empresarial" id="empresarial" onchange="cambioconvenio(this)" style="display: none;">
+                          <option value="EMP">
+                              EMP
+                          </option>
+                          <option value="PER">
+                              PER
+                          </option>
+                        </select>
+                    </div>
+                    <div class="pedido_ubicame" id="centrarmapa">
+                        <input type=image src="img/iconos/centrar.png" onclick="ubicame();">
+                    </div>
+                    <div class="pedido_programar" id="programarruta">
+                            <input type=image src="img/iconos/programar.png" onclick="recortarMapa()">
+                    </div>
+                    <div id="recogida">
+                        <div class="editarak"><img src="img/iconos/pencil.png"/></div>
+                        <label class="editaraksalida">Donde te recogemos?</label>
+                        <input type="text" class="direccionak" name="direccionsalida" id="direccionsalida" onclick="ak = 'salida';" onkeyup="cambioDireccion('salida');">
+                        <input type = "hidden" id="latitudsalida">
+                        <input type = "hidden" id="longitudsalida">
+                        <input name="mayorsalida" id="mayorsalida" type="hidden" value="">
+                    </div>
+                    <div id="dejada"><img src="img/texto_direccion.png" style="bottom: 65px; position: absolute; left: 50%; margin-left: -161px;">
+                        <div class="editar" id="imgllegada"><img src="img/iconos/pencil.png"/></div>
+                        <label class="editarakllegada" id="labelllegada">Donde te dejamos?</label>
+                        <input type="text" class="direccion" name="direccionllegada" id="direccionllegada" onclick="ak = 'llegada';" onkeyup="cambioDireccion('llegada');">
+                        <input type = "hidden" id="latitudllegada">
+                        <input type = "hidden" id="longitudllegada">
+                        <input name="mayorllegada" id="mayorllegada" type="hidden" value="">
+                    </div>
+                    <div>
+                        <br>
+                        <label>Cual es tu hora de entrada?</label><br>
+                        <input type="time" class="horaentrada" name="horaentrada" id="horaentrada"/>
+
+                    </div>
+                    <div>
+                        <br>
+                        <label>Que dia te recogemos?</label><br>
+                        <input type="date" class="horaentrada" name="diarecogida" id="diarecogida" onchange="diasRecogidas();"/><br>
+                    </div>
+                    <div>
+                        <br>
+                        <label>Que otros dias te recogemos?</label><br><br>
+                        <div class="diasrecogidas" id="diasrecogidas"></div><br>
+                        <label>Cuantos?</label><br><br>
+                        <div class="diasrecogidas" id="totalpasajeros">
+                        </div>
+                        <button type="button" class="btn" onclick="enviarReserva();">enviar</button>
+                    </div>
+                </div>
+            </div>-->
+        </div>
+        
+        <!-- pagina miperfil-->
+        <div data-role="page" id="perfil" class="">            
+            <!--Header principal-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/menucheto1.png" alt="inicio" onclick="toogleMenu();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-subservicio-sel">PERFIL</h2></div>
+<!--                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/menu.png" alt="inicio" onclick="toogleMenu();"></div></div>-->
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            
+            <!--contenedor-->
+            <div data-role="main" class="ui-content" align="center">
+                <div align="center">
+                    <img src="img/perfil/perfil.png" class="foto_perfil" />
+                    <h2>MIS DATOS</h2>
+                </div>
+                
+                <form class="formulario_cheto">
+                    <label for="nombreusuario">Nombre:</label>
+                    <input type="text" name="nombreusuario" id="nombreusuario" placeholder="Nombre">
+                    
+                    <label for="emailusuario">Correo</label>
+                    <input type="text" name="emailusuario" id="emailusuario" placeholder="Correo Electr&oacute;nico">
+                    
+                    <label for="loginusuario">Login</label>
+                    <input type="text" name="loginusuario" id="loginusuario" placeholder="Login">
+                    
+                    <label for="numerotelefono">Telefono</label>
+                    <input type="text" name="numerotelefono" id="numerotelefono" placeholder="Numero de telefono">                   
+                </form>
+<!--                    <div>
+                        <input name="nombreusuario" id="nombreusuario" type="text" class="login_field" placeholder="Nombre">
+                    </div>
+                    <div>
+                        <input name="emailusuario" id="emailusuario" type="email" class="login_field" placeholder="Correo Electr&oacute;nico">
+                    </div>
+                    <div>
+                        <input name="loginusuario" id="loginusuario" type="text" class="login_field" placeholder="Login">
+                    </div>
+                    <div>
+                        <input name="numerotelefono" id="numerotelefono" type="text" class="login_field" placeholder="N&uacute;mero telef&oacute;nico">
+                    </div>-->
+                    <!-- <input type="button" class="btn" value="Cambiar&#x00A;Password" onclick="visible();">-->
+                   
+                    <!--<button type="button" class="btn" onclick="$('#dialog').show()">Cambiar<br/>Password</button>-->
+                <div class="formulario_cheto" id="dialog" hidden>
+                    <form method="post" action="/action_page_post.php">
+                        <label for="pass1usuario">Password:</label>
+                        <input type="password" name="pass1usuario" id="pass1usuario" placeholder="Contraseña">
+
+                        <label for="pass2usuario">Confirmar password:</label>
+                        <input type="password" name="pass2usuario" id="pass2usuario" placeholder="Confirme contraseña">
+                    </form>
+<!--                        <div>
+                      <input name="pass1usuario" id="pass1usuario" placeholder="Contrase&ntilde;a" value="" type="password" class="login_field">
+                    </div>
+                    <div>
+                      <input name="pass2usuario" id="pass2usuario" placeholder="Repite la contrase&ntilde;a" value="" type="password" class="login_field">
+                    </div>-->
+                </div>
+                <div class="formulario_cheto">
+                    <a href="#" class="ui-btn ui-min btn_login ui-btn-icon-left ui-icon-star texto-16" data-corners="false" onclick="$('#dialog').slideToggle();">Cambiar password</a>
+                </div>
+                <div class="formulario_cheto">   
+                    <a href="#" class="ui-btn ui-min btn_login ui-btn-icon-left ui-icon-navigation texto-16" data-corners="false" onclick="actualizardatos();">Aceptar</a>
+<!--                    <input type="button" class="btn" value="Aceptar" onclick="actualizardatos();">-->
+                    <div align="center">
+                        <br>
+                        <a href="#tarjeta" data-transition="slide" onclick="tarjetaC();">Actualizar datos de Tarjeta de ceedito</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- pagina promociones-->
+         <div data-role="page" id="page_promociones" data-url="page_promociones">
+            <!--Header principal reserva-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/atras.png" alt="atrasimg" onclick="parent.history.back();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-inicio-servicio">CHETO</h2></div>
+            </div>
+            <div data-role="main" class="ui-content">
+                <center><h2>PROMOCIONES</h2></center>
+                <ul data-role="listview" class="justList" data-inset="true"></ul>
+                <center><div id="notPromocion" style="display: none"><h2>No existen promociones registadas actualmente</h2></div></center>
+            </div>
+        </div>
+
+           <!-- pagina Detalle de promociones-->
+        <div data-role="page" id="detalle_promociones" class="">            
+            <!--Header principal-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/menucheto1.png" alt="inicio" onclick="toogleMenu();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-subservicio-sel">DETALLE PROMOCIONES</h2></div>
+            </div>
+            
+            <!--contenedor-->
+            <div data-role="main" class="ui-content">
+            <center><h1 id="descipcion_promocion"></h1></center>
+            <img style="width: 100%" id="imagen_promocion"/>
+            <h2>Ingresa el siguiente codigo en tu proxima reserva</h2>
+            <div style=" border-width: 3px; border-style: dashed; border-color: #f7c71a;"> 
+                <h1 id="codigo_promocion"></h1>
+            </div>
+            </div>
+        </div>
+
+        <!-- pagina tarjeta de credito-->
+        <div data-role="page" id="tarjeta" class="">  
+            
+            <!--Header principal-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/atras.png" alt="atrasimg" onclick="parent.history.back();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-subservicio-sel">CHETO</h2></div>
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            
+            <!--contenedor-->
+            <div data-role="main" class="ui-content" align="center">
+                <h3>Datos de tarjeta</h3>
+                <div>
+                    <div class="lb-80" align="justify">
+                      <b>La informaci&oacute;n aqu&aacute; suministrada es absolutamente confidencial y no es de conocimiento de los Transportman o empleados de Cheto</b>
+                    </div>                    
+                    <div id="payu" hidden></div>
+                    <br>
+                    <div class="formulario_cheto" align="left">
+                        <label for="name_card">Nombre</label>
+                        <input name="name_card" id="name_card" type="text" class="" placeholder="Nombre">
+
+                        <label for="document">Documento de identidad</label>
+                        <input name="document" id="document" type="text" class="" placeholder="Documento">
+
+                        <label for="number">Numero de tarjeta</label>
+                        <input name="number" id="number" type="text" onkeyup="payU.validateCard(this.value);" onchange="method();" class="" placeholder="N tarjeta">
+
+                        <label for="cvc">Cod. de verificacioni</label>
+                        <input name="cvc" id="cvc" type="text" class="" placeholder="Cod. Verificaci&oacute;n">
+                    </div>
+                    <div class="formulario_cheto">
+                      <select name="method" id="method" class="">
+                          <option value="0">Selecciona tu franquicia</option>
+                          <option value="VISA"> VISA </option>
+                          <option value="MASTERCARD"> MASTER CARD </option>
+                          <option value="AMEX"> AMERICAN EXPRESS</option>
+                          <option value="DINERS"> DINERS CLUB </option>
+                      </select>
+                    </div>
+                    <div class="formulario_cheto">
+                        <select name="exp_month" id="exp_month" class=" mesan">
+                          <option value="no">Mes de vencimiento</option>
+                          <option value="01">01</option>
+                          <option value="02">02</option>
+                          <option value="03">03</option>
+                          <option value="04">04</option>
+                          <option value="05">05</option>
+                          <option value="06">06</option>
+                          <option value="07">07</option>
+                          <option value="08">08</option>
+                          <option value="09">09</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                        </select>
+                    </div>
+                    <div class="formulario_cheto">
+                        <select name="exp_year" id="exp_year" class="login_field mesan">
+                          <option value="no">Año de vencimiento</option>
+                          <option value="2016">2016</option>
+                          <option value="2017">2017</option>
+                          <option value="2018">2018</option>
+                          <option value="2019">2019</option>
+                          <option value="2020">2020</option>
+                          <option value="2021">2021</option>
+                          <option value="2022">2022</option>
+                          <option value="2023">2023</option>
+                          <option value="2024">2024</option>
+                          <option value="2025">2025</option>
+                          <option value="2026">2026</option>
+                          <option value="2027">2027</option>
+                          <option value="2028">2028</option>
+                          <option value="2029">2029</option>
+                          <option value="2030">2030</option>
+                          <option value="2031">2031</option>
+                          <option value="2032">2032</option>
+                          <option value="2033">2033</option>
+                          <option value="2034">2034</option>
+                          <option value="2035">2035</option>
+                        </select>
+                    </div>
+                    <input type="hidden" id="payer_id" name="payer_id">
+                    <div class="formulario_cheto padding_left-6" align="center">
+                        <a href="#" class="ui-btn ui-min btn_login ui-btn-inline texto-14" data-corners="false" onclick="validarTarjeta();">Registar</a>
+                        <a href="#" class="ui-btn ui-min btn_login ui-btn-inline texto-14" data-corners="false" onclick="">Cancelar</a>
+                        <a href="#" class="ui-btn ui-min btn_login ui-btn-inline texto-14" data-corners="false" onclick="validarpagoefectivo();">Ahora no</a>
+                        <!--<a href="#" class="ui-btn ui-min btn_login ui-btn-inline texto-14" data-corners="false" onclick="validarpagoefectivo();">Ingresar</a>-->
+    <!--                    <input type="button" class="btn" value="Registrar" onclick="validarTarjeta();">
+                        <input type="button" class="btn" value="Cancelar" id="volvertarjeta" name="volvertarjeta" onclick="mostrarpagina('homec');">
+                        <input type="button" class="btn" value="Ahora no" id="volvertarjetaingreso" name="volvertarjetaingreso" onclick="validarpagoefectivo();">-->
+                        <input type="hidden" id="valorartarjeta" value="0" >
+                        <!--<input id="btn_ingresar_tarjeta" type="button" class="btn" value="Ingresar" onclick="validarpagoefectivo();">-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- pagina Historico-->
+        <div data-role="page" id="historico-servicios" class="">            
+            <!--Header principal historico-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/atras.png" alt="atrasimg" onclick="parent.history.back();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-subservicio-sel">MIS PEDIDOS</h2></div>
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            
+            <!--footer principal conductor-->
+            <div data-role="footer" data-position="fixed" class="fondo_negro" align="center">
+<!--                <div class="circulo"></div>-->
+            </div>
+            
+            <!--contenedor principal conductor-->
+            <div data-role="main" class="ui-content" align="center">                
+                <div class="mis_pedidos">                 
+                    <hr style="height:3px; background-color:#ccc; border:0; margin-top:12px; margin-bottom:12px;">
+                    <div id="tabladinamica"></div>
+                </div>              
+            </div>
+        </div>
+        
+        <!-- pagina que muestra el mapa-->
+        <div data-role="page" id="map-page1" data-url="map-page1">
+            <!--Header principal reserva-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/atras.png" alt="atrasimg" onclick="parent.history.back();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-inicio-servicio">RECORRIDO</h2></div>
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            <h1 id="pruebatexto"></h1>
+            <h1 id="nombrePasajero" style="font-size: xx-large;"></h1>
+            <h1 id="direccionPasajero" style="text-align: center;"></h1>
+            <h1 id="horaPasajero" style="text-align:center;"></h1>
+            <br>
+            <div role="main" class="ui-content" id="map-canvas1">
+                <!-- map loads here... -->        
+            </div>
+            <div style="position: absolute; top:30%;">
+             <a class="waze_btn" data-role="button" data-transition="slide" id="wazeBoton" onclick="gps()"><img src="img/iconos/waze.png" class="waze_img" alt="telefono"></a>
+             <a id="wazemaps" href="" onclick="" style="display: none">&nbsp;</a>
+             <a class="telefono_btn" data-role="button" data-transition="slide" onclick="marcarNumero()"><img src="img/iconos/telefono.png" class="telefono_img" alt="telefono"></a>
+             <a id="marcartelefono" href="" onclick="" style="display: none">&nbsp;</a>
+            </div>
+            <br>
+             <div style="display: flex; position: relative; left: 10%; top: 10%;">
+                <div class="sin-decoracion" id="pasajero_entregado" style="display: block" onclick="pasajeroEntregado()">
+                    <a data-role="button" data-inline="true" data-theme="b">Pasajero Entregado</a>
+                </div>
+                 <div class="sin-decoracion" id="avisar_llegada" onclick="avisarllegada()">
+                    <a data-role="button" data-inline="true" data-theme="b">Avisar Llegada</a>
+                 </div>
+                 <div class="sin-decoracion" id="escanear_qr" onclick="escanearqr()">
+                    <a data-role="button" data-inline="true" data-theme="b">Escanear QR</a>
+                 </div>
+             </div>
+        </div>
+        
+        <!-- pagina que muestra el codigo QR-->
+        <div data-role="page" id="code-qr" data-url="code-qr">
+            <!--Header principal reserva-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img class="atrasimg" src="img/iconos/atras.png" alt="atrasimg" onclick="parent.history.back();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-inicio-servicio">Codigo QR</h2></div>
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            <br>
+            <img src="" style="width: 100%" id="imgQR">
+            <h1>Muestrale este codigo QR al conductor cuando te dispongas a subirte al vehiculo</h1>
+        </div>
+
+        <!-- pagina que muestra la calificacion del se-->
+        <div data-role="page" id="calificacion" data-url="calificacion">
+            <!--Header principal reserva-->
+            <div data-role="header" data-position="fixed" id="cabecera_principal" class="fondo_negro">
+                <div class="flotarizaquierda" id="menu"><div class="atras"><img style="display: none" class="atrasimg" src="img/iconos/atras.png" alt="atrasimg" onclick="parent.history.back();"></div></div>
+                <div class="flotarizaquierda lb-72" align="center"><h2 class="arial blanco texto-18" id="titulo-inicio-servicio">CHETO</h2></div>
+                <!--<div class="flotarizaquierda" onclick="crearPopupPedido();"><img src="../../img/iconos/carrito.png" alt="carrito" width="45" height="45"/></div>-->
+            </div>
+            <br>
+            <h1>TU RECORRIDO HA FINALIZADO</h1>
+            <br>
+            <div id="divRecorrido" style=" background-color: blanchedalmond; width: 80%; padding: 0 0; position: absolute; left: 7%; border-radius: 3%;height: 40%;"><input type=image src="img/recursos/reloj-15.png" onclick="alert('triste')"></div>
+            <div id="divCalificacion" style=" position: absolute;bottom: 4%;left: 12%;">
+            <center><h3>Califica tu viaje</h3></center>
+            <center><table>
+            	<tr>
+				    <th><input type=image src="img/recursos/triste-15.png" onclick="envioCalificacion(1)"></th>
+				    <th style="padding: 60px;"><input type=image src="img/recursos/normal-15.png" onclick="envioCalificacion(3)"></th> 
+				    <th><input type=image src="img/recursos/feliz.png" onclick="envioCalificacion(5)"></th>
+				</tr>		
+            </table></center>
+            </div>
+        </div>
+
+        <!--div que muestra el loader--->
+        <div class="cargando" hidden>
+            <img src="img/loader/loading1.gif" class="loading" alt="cargando"/>
+        </div>        
+        
+        <script type="text/javascript" src="cordova.js"></script>
+        <script type="text/javascript" src="js/notificaciones.js"></script>
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript" src="js/alertas.js"></script>
+        <script type="text/javascript" src="js/loginRedes.js"></script>
+        <script type="text/javascript" src="js/login.js"></script>
+        <script type="text/javascript" src="js/servicios.js"></script>
+        <script type="text/javascript" src="js/rutas.js"></script>
+        <script type="text/javascript" src="js/mapa.js"></script>
+        <script type="text/javascript" src="js/popup.js"></script>
+        <script type="text/javascript" src="js/pagos.js"></script>
+        <script type="text/javascript" src="js/reserva.js"></script>
+        <script type="text/javascript" src="js/usuario.js"></script>
+    </body>
+</html>
